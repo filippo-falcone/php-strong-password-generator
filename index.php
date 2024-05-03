@@ -2,17 +2,10 @@
 // Creo una stringa con i parametri per generare la password usando lettere, lettere maiuscole, numeri, e simboli.
 // in base al numero che ricevo, attraverso la input, creo una funzione che genera una password formata dallo stesso numero di caratteri ma presi randomicamente dall'array.
 
+include_once __DIR__ . '/functions.php';
 $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_-=+;:,.?';
 $passwordLength = isset($_GET['password-length']) ? intval($_GET['password-length']) : '';
 $password = generateRandomPassword($passwordLength, $characters);
-function generateRandomPassword($passwordLength, $characters) {
-    // Creo un ciclo for che aggiunge a $password un carattere random compreso tra 0 e l'ultimo carattere di $characters, finche $i è minore di $passwordLength
-    $password = '';
-    for ($i = 0; $i < $passwordLength; $i++) {
-        $password .= $characters[rand(0, strlen($characters) - 1)];
-    }
-    return $password;
-};
 ?>
 
 <!DOCTYPE html>
@@ -32,7 +25,7 @@ function generateRandomPassword($passwordLength, $characters) {
             <h2 class="text-light">Genera una password sicura</h2>
         </div>
         <?php if ($passwordLength > 0) { ?>
-            <div class="alert alert-success" role="alert"><?php echo $password; ?></div>
+            <div class="alert alert-success" role="alert">La tua password è: <?php echo $password; ?></div>
         <?php } elseif ($passwordLength === 0) { ?>
             <div class="alert alert-danger" role="alert">Carattere non supportato</div>
         <?php } else { ?>
