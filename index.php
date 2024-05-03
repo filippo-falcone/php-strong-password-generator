@@ -4,13 +4,31 @@
 // Creo una stringa con i parametri per generare la password usando lettere, lettere maiuscole, numeri, e simboli.
 // in base al numero che ricevo, attraverso la input, creo una funzione che genera una password formata dallo stesso numero di caratteri ma presi randomicamente dall'array.
 session_start();
-$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_-=+;:,.?';
+$letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+$numbers = '0123456789';
+$symbols = '!@#$%^&*()_-=+;:,.?';
+$characters = $letters . $numbers . $symbols;
 $passwordLength = isset($_GET['password-length']) ? intval($_GET['password-length']) : '';
+$lettersFilter = isset($_GET['letters']) && $_GET['letters'] === '1' ? true : false;
+$numbersFilter = isset($_GET['numbers']) && $_GET['numbers'] === '1' ? true : false;
+$symbolsFilter = isset($_GET['symbols']) && $_GET['symbols'] === '1' ? true : false;
+if ($lettersFilter || $numbersFilter || $symbolsFilter) {
+    $characters = '';
+    if ($lettersFilter) {
+        $characters .= $letters;
+    }
+    if($numbersFilter){
+        $characters .= $numbers;
+    }
+    if($symbolsFilter){
+        $characters .= $symbols;
+    }
+}
 $password = generateRandomPassword($passwordLength, $characters);
 $_SESSION['password'] = $password;
-if ($passwordLength > 0) {
-    header('Location: ./congrats.php');
-}
+// if ($passwordLength > 0) {
+//     header('Location: ./congrats.php');
+// }
 ?>
 
 <!DOCTYPE html>
@@ -36,12 +54,38 @@ if ($passwordLength > 0) {
         <?php } else { ?>
             <div class="alert alert-warning" role="alert">Nessun Parametro valido inserito</div>
         <?php } ?>
-
         <form class="my-3 p-3 bg-light rounded-3">
             <div class="row justify-content-between mb-3">
                 <label for="password-length" class="col-sm-4 col-form-label">Lunghezza password:</label>
                 <div class="col-sm-8">
                     <input type="text" name="password-length" class="form-control" id="password-length" placeholder="min (1 carattere)" value="<?php echo $passwordLength > 0 ? $passwordLength : '' ?>">
+                </div>
+            </div>
+            <div class="row justify-content-between mb-3">
+                <label class="col-sm-4 col-form-label">Consenti ripetizioni di uno o più caratteri:</label>
+                <div class="col-sm-8 d-flex flex-column">
+                    <div>
+                        <input type="radio" name="reapet-yes" id="yes">
+                        <label for="yes">Si</label>
+                    </div>
+                    <div>
+                        <input type="radio" name="reapet-no" id="no">
+                        <label for="no">No</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-8 offset-4">
+                    <input type="checkbox" name="letters" id="letters" value="1" <?php echo $lettersFilter ? 'checked' : ''; ?>>
+                    <label for="letters">Lettere</label>
+                </div>
+                <div class="col-sm-8 offset-4">
+                    <input type="checkbox" name="numbers" id="numbers" value="1" <?php echo $numbersFilter ? 'checked' : ''; ?>>
+                    <label for="numbers">Numeri</label>
+                </div>
+                <div class="col-sm-8 offset-4">
+                    <input type="checkbox" name="symbols" id="symbols" value="1" <?php echo $symbolsFilter ? 'checked' : ''; ?>>
+                    <label for="symbols">Simboli</label>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Invia</button>
