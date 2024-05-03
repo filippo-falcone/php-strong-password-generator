@@ -13,7 +13,7 @@ session_start();
     <!-- /Bootstrap CSS -->
 </head>
 <body class="bg-success">
-    <div class="container text-center w-50 py-4">
+    <div class="container text-center py-4">
         <div class="mb-4">
             <h1 class="text-light">Strong Password Generator</h1>
             <h2>Genera una password sicura</h2>

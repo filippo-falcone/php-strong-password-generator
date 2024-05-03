@@ -24,7 +24,7 @@ if ($passwordLength > 0) {
     <!-- /Bootstrap CSS -->
 </head>
 <body class="bg-primary">
-    <div class="container w-50 py-4">
+    <div class="container py-4">
         <div class="text-center">
             <h1 class="text-secondary">Strong Password Generator</h1>
             <h2 class="text-light">Genera una password sicura</h2>
@@ -40,7 +40,7 @@ if ($passwordLength > 0) {
         <form class="my-3 p-3 bg-light rounded-3">
             <div class="row justify-content-between mb-3">
                 <label for="password-length" class="col-sm-4 col-form-label">Lunghezza password:</label>
-                <div class="col-sm-4">
+                <div class="col-sm-8">
                     <input type="text" name="password-length" class="form-control" id="password-length" placeholder="min (1 carattere)" value="<?php echo $passwordLength > 0 ? $passwordLength : '' ?>">
                 </div>
             </div>
