@@ -1,5 +1,18 @@
 <?php
+// Creo una stringa con i parametri per generare la password usando lettere, lettere maiuscole, numeri, e simboli.
+// in base al numero che ricevo, attraverso la input, creo una funzione che genera una password formata dallo stesso numero di caratteri ma presi randomicamente dall'array.
 
+$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()_-=+;:,.?';
+$passwordLength = isset($_GET['password-length']) ? intval($_GET['password-length']) : '';
+$password = generateRandomPassword($passwordLength, $characters);
+function generateRandomPassword($passwordLength, $characters) {
+    // Creo un ciclo for che aggiunge a $password un carattere random compreso tra 0 e l'ultimo carattere di $characters, finche $i è minore di $passwordLength
+    $password = '';
+    for ($i = 0; $i < $passwordLength; $i++) {
+        $password .= $characters[rand(0, strlen($characters) - 1)];
+    }
+    return $password;
+};
 ?>
 
 <!DOCTYPE html>
@@ -18,15 +31,23 @@
             <h1 class="text-secondary">Strong Password Generator</h1>
             <h2 class="text-light">Genera una password sicura</h2>
         </div>
+        <?php if ($passwordLength > 0) { ?>
+            <div class="alert alert-success" role="alert"><?php echo $password; ?></div>
+        <?php } elseif ($passwordLength === 0) { ?>
+            <div class="alert alert-danger" role="alert">Carattere non supportato</div>
+        <?php } else { ?>
+            <div class="alert alert-warning" role="alert">Nessun Parametro valido inserito</div>
+        <?php } ?>
+
         <form class="my-3 p-3 bg-light rounded-3">
             <div class="row justify-content-between mb-3">
                 <label for="password-length" class="col-sm-4 col-form-label">Lunghezza password:</label>
                 <div class="col-sm-4">
-                    <input type="text" class="form-control" id="password-length">
+                    <input type="text" name="password-length" class="form-control" id="password-length" placeholder="min (1 carattere)" value="<?php echo $passwordLength > 0 ? $passwordLength : '' ?>">
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Invia</button>
-            <button type="submit" class="btn btn-secondary">Annulla</button>
+            <button type="reset" class="btn btn-secondary">Annulla</button>
         </form>
     </div>
 </body>
