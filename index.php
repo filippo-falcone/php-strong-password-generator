@@ -10,27 +10,26 @@ $symbols = '!@#$%^&*()_-=+;:,.?';
 $characters = $letters . $numbers . $symbols;
 $passwordLength = isset($_GET['password-length']) ? intval($_GET['password-length']) : 0;
 $repeatFilter = isset($_GET['repeat']) && $_GET['repeat'] === '0' ? false : true;
-$lettersFilter = isset($_GET['letters']) && $_GET['letters'] === '1' ? true : false;
-$numbersFilter = isset($_GET['numbers']) && $_GET['numbers'] === '1' ? true : false;
-$symbolsFilter = isset($_GET['symbols']) && $_GET['symbols'] === '1' ? true : false;
-if ($lettersFilter || $numbersFilter || $symbolsFilter) {
+$charsFilter = isset($_GET['chars']) ? $_GET['chars'] : [];
+if ($charsFilter) {
     $characters = '';
-    if ($lettersFilter) {
+    if (in_array('letters', $charsFilter )) {
         $characters .= $letters;
     }
-    if($numbersFilter){
+    if(in_array('numbers', $charsFilter )){
         $characters .= $numbers;
     }
-    if($symbolsFilter){
+    if(in_array('symbols', $charsFilter )){
         $characters .= $symbols;
     }
 }
 $password = generateRandomPassword($passwordLength, $characters, $repeatFilter);
+var_dump($password);
 
 $_SESSION['password'] = $password;
-if ($passwordLength > 0) {
-    header('Location: ./congrats.php');
-}
+// if ($passwordLength > 0) {
+//     header('Location: ./congrats.php');
+// }
 ?>
 
 <!DOCTYPE html>
@@ -77,15 +76,15 @@ if ($passwordLength > 0) {
             </div>
             <div class="row mb-3">
                 <div class="col-sm-8 offset-4">
-                    <input class="form-check-input" type="checkbox" name="letters" id="letters" value="1" <?php echo $lettersFilter ? 'checked' : ''; ?>>
+                    <input class="form-check-input" type="checkbox" name="chars[]" id="letters" value="letters" <?php echo in_array('letters', $charsFilter) ? 'checked' : ''; ?>>
                     <label class="form-check-label" for="letters">Lettere</label>
                 </div>
                 <div class="col-sm-8 offset-4">
-                    <input class="form-check-input" type="checkbox" name="numbers" id="numbers" value="1" <?php echo $numbersFilter ? 'checked' : ''; ?>>
+                    <input class="form-check-input" type="checkbox" name="chars[]" id="numbers" value="numbers" <?php echo in_array('numbers', $charsFilter) ? 'checked' : ''; ?>>
                     <label class="form-check-label" for="numbers">Numeri</label>
                 </div>
                 <div class="col-sm-8 offset-4">
-                    <input class="form-check-input" type="checkbox" name="symbols" id="symbols" value="1" <?php echo $symbolsFilter ? 'checked' : ''; ?>>
+                    <input class="form-check-input" type="checkbox" name="chars[]" id="symbols" value="symbols" <?php echo in_array('symbols', $charsFilter) ? 'checked' : ''; ?>>
                     <label class="form-check-label" for="symbols">Simboli</label>
                 </div>
             </div>
