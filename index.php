@@ -4,32 +4,31 @@
 // Creo una stringa con i parametri per generare la password usando lettere, lettere maiuscole, numeri, e simboli.
 // in base al numero che ricevo, attraverso la input, creo una funzione che genera una password formata dallo stesso numero di caratteri ma presi randomicamente dall'array.
 session_start();
-$letters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-$numbers = '0123456789';
-$symbols = '!@#$%^&*()_-=+;:,.?';
-$characters = $letters . $numbers . $symbols;
+$letters = [...range('a', 'z'), ...range('A', 'Z')];
+$numbers = range(0, 9);
+$symbols = range('-', '!');
+$characters = [...$letters, ...$numbers, ...$symbols];
 $passwordLength = isset($_GET['password-length']) ? intval($_GET['password-length']) : 0;
 $repeatFilter = isset($_GET['repeat']) && $_GET['repeat'] === '0' ? false : true;
 $charsFilter = isset($_GET['chars']) ? $_GET['chars'] : [];
 if ($charsFilter) {
-    $characters = '';
+    $characters = [];
     if (in_array('letters', $charsFilter )) {
-        $characters .= $letters;
+        $characters = [...$characters, ...$letters];
     }
     if(in_array('numbers', $charsFilter )){
-        $characters .= $numbers;
+        $characters = [...$characters, ...$numbers];
     }
     if(in_array('symbols', $charsFilter )){
-        $characters .= $symbols;
+        $characters = [...$characters, ...$symbols];
     }
 }
 $password = generateRandomPassword($passwordLength, $characters, $repeatFilter);
-var_dump($password);
 
 $_SESSION['password'] = $password;
-// if ($passwordLength > 0) {
-//     header('Location: ./congrats.php');
-// }
+if ($passwordLength > 0) {
+    header('Location: ./congrats.php');
+}
 ?>
 
 <!DOCTYPE html>

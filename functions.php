@@ -8,9 +8,9 @@ function generateRandomPassword($passwordLength, $characters, $repeatFilter) {
     $password = '';
     for ($i = 0; $i < $passwordLength; $i++) {
         if ($repeatFilter) {
-            $password .= $characters[rand(0, strlen($characters) - 1)];
+            $password .= $characters[rand(0, count($characters) - 1)];
         } elseif (!$repeatFilter) {
-            $randomCharacters = $characters[rand(0, strlen($characters) - 1)];
+            $randomCharacters = $characters[rand(0, count($characters) - 1)];
             if(!str_contains($password, $randomCharacters)) {
                 $password .= $randomCharacters;
             } else {
